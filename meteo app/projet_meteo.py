@@ -27,7 +27,7 @@ def get_config(): #obtenir parametres pour requête
 	file.close()
 	date =datetime.date.today()
 	res.append(date)
-	res.append(date + datetime.timedelta(days = 4))
+	res.append(date + datetime.timedelta(days = 5))
 	res.append(int(datetime.datetime.now().strftime("%H")))
 	return res #latitude,longitude,date_debut(date du jour),date de fin, heure actuel
 
@@ -54,7 +54,7 @@ temp_t3= [res_rtemp[78],res_rtemp[84],res_rtemp[88],res_rtemp[94],res_ftemp[78],
 temp_t4= [res_rtemp[102],res_rtemp[108],res_rtemp[112],res_rtemp[118],res_ftemp[102],res_ftemp[108],res_ftemp[112],res_ftemp[118]]#j+4
 
 #code météo
-def get_wjcode(jour):#obtenir le code météo le plus utilisé entre 6h et 22h (marche uniquement de j+1 à j+4)
+def get_wjcode(jour):#obtenir le code météo le plus utilisé entre 6h et 22h (marche uniquement de j+1 à j+5)
 	mem={}
 	if jour == 1:
 		interval = (24+6,47-1)
@@ -64,6 +64,8 @@ def get_wjcode(jour):#obtenir le code météo le plus utilisé entre 6h et 22h (
 		interval = (72+6,95-1)
 	elif jour == 4:
 		interval = (96+6,119-1)
+	elif jour == 5:
+		interval =(120+6,143-1)
 	for i in range(interval[0],(interval[1]+1)):
 		if res_whcode[i] in mem:
 			mem[res_whcode[i]]+=1
@@ -95,7 +97,7 @@ def translate(jour,mois=None): #jour anglais -> francais
 		return [trad_j[jour],trad_m[mois]]
 	return (trad_j[jour])
 
-#Get nom jour format ajd,j+1,...,j+4 + traduit en francais
+#Get nom jour format ajd,j+1,...,j+5+ traduit en francais
 jours = []
 for i in range(5):
 	jours.append(translate((config[2]+ datetime.timedelta(days = i)).strftime("%A")))
@@ -235,7 +237,7 @@ draw.text((252.0, 431.0), f"{round(moyenne(temp_t1[:4]),1)}°", fill=text_color,
 
 #températre ressentie j+1
 font2 = ImageFont.truetype(str(relative_to_assets('font\\Inter-Light.otf')), size=24)
-draw.text((245.0, 524.0), f"{round(moyenne(temp_t1[4:]),1)}°", fill=text_color, font=font2)#arrondi à 0,1 de la moyenne des températures ressentie de 6h,12h,16h,22h
+draw.text((245.0, 524.0), f"{round(moyenne(temp_t1[5:]),1)}°", fill=text_color, font=font2)#arrondi à 0,1 de la moyenne des températures ressentie de 6h,12h,16h,22h
 
 font3 = ImageFont.truetype(str(relative_to_assets('font\\Inter-Thin.otf')), size=24)
 draw.text((245.0, 495.0), "RESSENTIE", fill=text_color, font=font3)
@@ -245,10 +247,10 @@ font4 = ImageFont.truetype(str(relative_to_assets('font\\Inter-Light.otf')), siz
 draw.text((411.0, 471.0), jours[1], fill=text_color, font=font4)
 
 #température reel j+2
-draw.text((814.0, 431.0), f"{round(moyenne(temp_t2[:4]),1)}°", fill=text_color, font=font1)#arrondi à 0,1 de la moyenne des températures réels de 6h,12h,16h,22h
+draw.text((814.0, 431.0), f"{round(moyenne(temp_t2[:5]),1)}°", fill=text_color, font=font1)#arrondi à 0,1 de la moyenne des températures réels de 6h,12h,16h,22h
 
 #températre ressentie j+2
-draw.text((808.0, 524.0), f"{round(moyenne(temp_t2[4:]),1)}°", fill=text_color, font=font2)#arrondi à 0,1 de la moyenne des températures ressentie de 6h,12h,16h,22h
+draw.text((808.0, 524.0), f"{round(moyenne(temp_t2[5:]),1)}°", fill=text_color, font=font2)#arrondi à 0,1 de la moyenne des températures ressentie de 6h,12h,16h,22h
 
 draw.text((808.0, 495.0), "RESSENTIE", fill=text_color, font=font3)
 
@@ -256,10 +258,10 @@ draw.text((808.0, 495.0), "RESSENTIE", fill=text_color, font=font3)
 draw.text((974.0, 471.0), jours[2], fill=text_color, font=font4)
 
 #température reel j+3
-draw.text((252.0, 560.0), f"{round(moyenne(temp_t3[:4]),1)}°", fill=text_color, font=font1)
+draw.text((252.0, 560.0), f"{round(moyenne(temp_t3[:5]),1)}°", fill=text_color, font=font1)
 
 #températre ressentie j+3
-draw.text((245.0, 654.0), f"{round(moyenne(temp_t3[4:]),1)}°", fill=text_color, font=font2)
+draw.text((245.0, 654.0), f"{round(moyenne(temp_t3[5:]),1)}°", fill=text_color, font=font2)
 
 draw.text((245.0, 624.0), "RESSENTIE", fill=text_color, font=font3)
 
@@ -267,20 +269,26 @@ draw.text((245.0, 624.0), "RESSENTIE", fill=text_color, font=font3)
 draw.text((411.0, 600.0), jours[3], fill=text_color, font=font4)
 
 #température reel j+4
-draw.text((814.0, 569.0), f"{round(moyenne(temp_t4[:4]),1)}°", fill=text_color, font=font1)
+draw.text((814.0, 569.0), f"{round(moyenne(temp_t4[:5]),1)}°", fill=text_color, font=font1)
 
 #températre ressentie j+4
-draw.text((808.0, 654.0), f"{round(moyenne(temp_t4[4:]),1)}°", fill=text_color, font=font2)
+draw.text((808.0, 654.0), f"{round(moyenne(temp_t4[5:]),1)}°", fill=text_color, font=font2)
 
 draw.text((808.0, 624.0), "RESSENTIE", fill=text_color, font=font3)
 
 #jour bas droite
-draw.text((974.0, 600.0), jours[4], fill=text_color, font=font4)
+draw.text((974.0, 600.0), jours[4], fill=text_color, font=font4) 
+
+#temeprature reel j+5
+draw.text((1000.0, 900.0), f"{round(moyenne(temp_t5[:5]),1)}°", fill=text_color, font=font1)
+
+draw.text((1000.0, 820), f"{round(moyenne(temp_t5[5:]),1)}°", fill=text_color, font=font2)
+#jour bas gauche
+draw.text((989.0, 600), "RESSENTIE", fill=text_color, font=font3)
 
 #température actuel
 font = ImageFont.truetype(str(relative_to_assets('font\\Inter-ThinItalic.otf')), size=110)
 draw.text((318.0, 53.0), f"{temp_actuel}°", fill=text_color, font=font)
-
 draw_textes = ImageTk.PhotoImage(background_texte)
 canvas.create_image(0, 0, image=draw_textes, anchor=NW)
 
@@ -366,6 +374,10 @@ canvas.create_image(673.18, 439.64, image=im_j3, anchor=NW)
 #image bottom (j+4)
 im_j4 = ImageTk.PhotoImage(resize(get_data_show(get_wjcode(4))[0],2))
 canvas.create_image(673.18, 569.31, image=im_j4, anchor=NW)
+
+#image bottom (j+5)
+im_j5 = ImageTk.PhotoImage(resize(get_data_show(get_wjcode(5))[0],2))
+canvas.create_image(973.18, 669.31, image=im_j5, anchor=NW)
 
 window.resizable(False, False)
 window.mainloop()
