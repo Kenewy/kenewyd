@@ -32,9 +32,10 @@ def get_config(): #obtenir parametres pour requête
 	return res #latitude,longitude,date_debut(date du jour),date de fin, heure actuel
 
 config = get_config()
+#
 
 #Requete get data meteo
-api =f"""https://api.open-meteo.com/v1/forecast?latitude={config[0]}&longitude={config[1]}&hourly=temperature_2m,apparent_temperature,weathercode&daily=temperature_2m_max,temperature_2m_min&timezone=auto&start_date={config[2]}&end_date={config[3]}"""
+api =f"""https://api.open-meteo.com/v1/forecast?latitude=43.6109&longitude=3.8763&hourly=temperature_2m,apparent_temperature,weathercode&daily=temperature_2m_max,temperature_2m_min&timezone=auto&start_date={config[2]}&end_date={config[3]}"""
 requete = requests.get(api)
 reponse_json = requete.json()
 
